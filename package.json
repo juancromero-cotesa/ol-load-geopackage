@@ -1,7 +1,7 @@
 {
-  "name": "ol-load-geopackage",
+  "name": "openlayers-load-geopackage",
   "version": "1.0.2",
-  "description": "Loads OGC GeoPackage vector data tables into OpenLayers Vector Sources",
+  "description": "Loads OGC GeoPackage vector data tables into 4.6 OpenLayers Vector Sources",
   "main": "dist/ol-load-geopackage.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +14,7 @@
     "QGIS",
     "SLD"
   ],
-  "author": "Richard Thomas",
+  "author": "Richard Thomas, Juan Carlos Romero",
   "license": "ISC",
   "dependencies": {
     "openlayers": "^4.6.5",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/richard-thomas/ol-load-geopackage.git"
+    "url": "git+https://github.com/juancromero-cotesa/openlayers-load-geopackage.git"
   },
-  "homepage": "https://github.com/richard-thomas/ol-load-geopackage#readme"
+  "homepage": "https://github.com/juancromero-cotesa/openlayers-load-geopackage.git#readme"
 }
