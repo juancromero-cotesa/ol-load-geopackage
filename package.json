@@ -17,6 +17,7 @@
   "author": "Richard Thomas",
   "license": "ISC",
   "dependencies": {
+    "openlayers": "^4.6.5",
     "ol": "^6.7.0",
     "sql.js": "^1.6.1",
     "util": "^0.12.4"
