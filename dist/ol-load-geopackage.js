@@ -8,7 +8,7 @@
  */
 
 import initSqlJs from "sql.js";
-import {get as ol_proj_get} from 'ol/proj';
+import proj4 from "proj4";
 import * as ol from "openlayers";
 import ol_format_WKB from "ol/format/WKB";
 
@@ -35,7 +35,7 @@ export default function (gpkgFile, displayProjection) {
   var gpkgPromise = loadGpkg(gpkgFile);
 
   // Check if we have a definition for the display projection (SRS)
-  if (!ol_proj_get(displayProjection)) {
+  if (!proj4(displayProjection)) {
     throw new Error(
       "Missing requested display projection [" +
         displayProjection +
@@ -168,7 +168,7 @@ function processGpkgData(
     let tableDataProjection = "EPSG:" + table.srs_id;
 
     // Check if we have a definition for the data projection (SRS)
-    if (!ol_proj_get(tableDataProjection)) {
+    if (!proj4(tableDataProjection)) {
       throw new Error(
         "Missing data projection [" +
           tableDataProjection +
@@ -224,27 +224,27 @@ function processGpkgData(
  * @returns feature geometry in WKB (Well Known Binary) format
  */
 function parseGpkgGeom(gpkgBinGeom) {
-    var flags = gpkgBinGeom[3];
-    var eFlags = (flags >> 1) & 7;
-    var envelopeSize;
-    switch (eFlags) {
-        case 0:
-            envelopeSize = 0;
-            break;
-        case 1:
-            envelopeSize = 32;
-            break;
-        case 2:
-        case 3:
-            envelopeSize = 48;
-            break;
-        case 4:
-            envelopeSize = 64;
-            break;
-        default:
-            throw new Error("Invalid geometry envelope size flag in GeoPackage");
-    }
-/*
+  var flags = gpkgBinGeom[3];
+  var eFlags = (flags >> 1) & 7;
+  var envelopeSize;
+  switch (eFlags) {
+    case 0:
+      envelopeSize = 0;
+      break;
+    case 1:
+      envelopeSize = 32;
+      break;
+    case 2:
+    case 3:
+      envelopeSize = 48;
+      break;
+    case 4:
+      envelopeSize = 64;
+      break;
+    default:
+      throw new Error("Invalid geometry envelope size flag in GeoPackage");
+  }
+  /*
     // Extract SRS (EPSG code)
     // (not required as given for whole table in gpkg_contents table)
     var littleEndian = flags & 1;
@@ -256,7 +256,7 @@ function parseGpkgGeom(gpkgBinGeom) {
         srsId = srs[3] + (srs[2]<<8) + (srs[1]<<16) + (srs[0]<<24);
     }
 */
-/*
+  /*
     // DEBUG: display other properties of the feature
     console.log('gpkgBinGeom Header: ' + (littleEndian ? 'Little' : 'Big')
         + ' Endian');
@@ -266,7 +266,7 @@ function parseGpkgGeom(gpkgBinGeom) {
     console.log("gpkgBinGeom srs_id:", srsId);
     console.log("gpkgBinGeom envelope size (bytes):", envelopeSize);
 */
-    // Extract WKB which starts after variable-size "envelope" field
-    var wkbOffset = envelopeSize + 8;
-    return gpkgBinGeom.subarray(wkbOffset);
+  // Extract WKB which starts after variable-size "envelope" field
+  var wkbOffset = envelopeSize + 8;
+  return gpkgBinGeom.subarray(wkbOffset);
 }
